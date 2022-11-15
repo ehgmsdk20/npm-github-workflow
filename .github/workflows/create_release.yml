@@ -25,7 +25,7 @@ jobs:
         git checkout -b release/v${{ env.NEW_VERSION }}
         git commit -m "Upgrade version to $env.NEW_VERSION"
         git push origin
-        gh pr create -B release/v${{ env.NEW_VERSION }} -H master --title 'Upgrade version to ${{ env.NEW_VERSION }}' --body 'Upgrade version to ${{ env.NEW_VERSION }}'
+        gh pr create -B release/v${{ env.NEW_VERSION }} -H main --title 'Upgrade version to ${{ env.NEW_VERSION }}' --body 'Upgrade version to ${{ env.NEW_VERSION }}'
       env:
         RELEASE_TYPE: ${{ github.event.inputs.release-type }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
