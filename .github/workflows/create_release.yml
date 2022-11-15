@@ -24,6 +24,7 @@ jobs:
       run: |
         yarn --no-git-tag-version version --$RELEASE_TYPE
         git status
+        echo "NEW_VERSION=$(npm pkg get version | tr -d '"')"
         echo "NEW_VERSION=$(npm pkg get version | tr -d '"')" >> $GITHUB_ENV
     - name: Create release branch
       run: |
