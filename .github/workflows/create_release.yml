@@ -32,6 +32,6 @@ jobs:
         git add "package.json"
         git commit -m "Upgrade version to $env.NEW_VERSION"
         git push origin release/v${{ env.NEW_VERSION }}
-        gh pr create -B release/v${{ env.NEW_VERSION }} -H main --title 'Upgrade version to ${{ env.NEW_VERSION }}' --body 'Upgrade version to ${{ env.NEW_VERSION }}'
+        gh pr create -B main -H release/v${{ env.NEW_VERSION }} --title 'Upgrade version to ${{ env.NEW_VERSION }}' --body 'Upgrade version to ${{ env.NEW_VERSION }}'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
