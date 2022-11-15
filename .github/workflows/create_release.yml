@@ -22,11 +22,9 @@ jobs:
         git config --global user.name "Your Name"
     - name: Upgrade version
       run: |
-        echo "yarn --no-git-tag-version version --$RELEASE_TYPE"
-        yarn --no-git-tag-version version --$RELEASE_TYPE
+        echo "yarn --no-git-tag-version version --${{ github.event.inputs.release-type }}"
+        yarn --no-git-tag-version version --${{ github.event.inputs.release-type }}
         echo "NEW_VERSION=$(npm pkg get version | tr -d '"')" >> $GITHUB_ENV
-      env:
-        RELEASE_TYPE: ${{ github.event.inputs.release-type }}
     - name: Create release branch
       run: |
         git checkout -b release/v${{ env.NEW_VERSION }}
