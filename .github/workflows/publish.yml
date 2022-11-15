@@ -21,7 +21,7 @@ jobs:
         #   yarn
         #   yarn publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       - name: Push tag
         run: |
           git tag $(echo ${{ github.head_ref }} | cut -b 9-)
