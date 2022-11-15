@@ -1,6 +1,6 @@
 name: Create Release Branch
 on:
-	workflow_dispatch:
+  workflow_dispatch:
     inputs:
       version:
           type: choice
