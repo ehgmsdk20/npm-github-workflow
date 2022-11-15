@@ -22,6 +22,7 @@ jobs:
         git config --global user.name "Your Name"
     - name: Upgrade version
       run: |
+        echo "yarn --no-git-tag-version version --$RELEASE_TYPE"
         yarn --no-git-tag-version version --$RELEASE_TYPE
         git status
         echo "NEW_VERSION=$(npm pkg get version | tr -d '"')"
