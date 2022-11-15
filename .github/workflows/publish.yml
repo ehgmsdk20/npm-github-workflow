@@ -2,10 +2,10 @@ name: Publish Package to Npm
 on:
   pull_request:
     branches: [ main ]
+    types: [ closed ]
 jobs:
   publish:
-    # if:  startsWith(github.head_ref, 'release/')
-    if:  startsWith(github.head_ref, 'feature')
+    if: ${{ startsWith(github.head_ref, 'release/') && (github.event.pull_request.merged == true) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -15,15 +15,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Publish package
         run: |
-          echo ${{ github.head_ref }}
-          echo "TAG=$(echo ${{ github.head_ref }} | cut -b 9-)" >> $GITHUB_ENV
-        # run: |
-        #   yarn
-        #   yarn publish --access public
+          yarn
+          yarn publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       - name: Push tag
         run: |
+          git checkout main
           git tag $(echo ${{ github.head_ref }} | cut -b 9-)
           git push --tags
         env:
