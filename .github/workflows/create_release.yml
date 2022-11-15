@@ -27,6 +27,7 @@ jobs:
     - name: Create release branch
       run: |
         git checkout -b release/v${{ env.NEW_VERSION }}
+        git add "package.json"
         git commit -m "Upgrade version to $env.NEW_VERSION"
         git push origin
         gh pr create -B release/v${{ env.NEW_VERSION }} -H main --title 'Upgrade version to ${{ env.NEW_VERSION }}' --body 'Upgrade version to ${{ env.NEW_VERSION }}'
