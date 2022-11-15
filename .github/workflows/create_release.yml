@@ -16,6 +16,10 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v3
+    - name: Git configuration
+      run: |
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
     - name: Upgrade version
       run: |
         yarn --no-git-tag-version version --$RELEASE_TYPE
