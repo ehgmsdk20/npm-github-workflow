@@ -1,0 +1,11 @@
+{
+  "name": "npm-github-workflow",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ehgmsdk20/npm-github-workflow.git",
+  "author": "ehgmsdk20 <kdh75576795@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo 'execute your test code'"
+  }
+}

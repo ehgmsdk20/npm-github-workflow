@@ -1,0 +1,31 @@
+name: Create Release Branch
+on: 
+	workflow_dispatch:
+    inputs:
+      version:
+          type: choice
+          description: Sematic version type of new version
+          options:
+          - patch
+          - minor
+          - major
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+    - name: Upgrade version
+      run: |
+        yarn --no-git-tag-version version --$RELEASE_TYPE
+        echo "NEW_VERSION=$(npm pkg get version | tr -d '"')" >> $GITHUB_ENV
+    - name: Create release branch
+      run: |
+        git checkout -b release/v${{ env.NEW_VERSION }}
+        git commit -m "Upgrade version to $env.NEW_VERSION"
+        git push origin
+        gh pr create -B release/v${{ env.NEW_VERSION }} -H master --title 'Upgrade version to ${{ env.NEW_VERSION }}' --body 'Upgrade version to ${{ env.NEW_VERSION }}'
+      env:
+        RELEASE_TYPE: ${{ github.event.inputs.release-type }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
