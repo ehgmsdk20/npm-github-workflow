@@ -20,8 +20,6 @@ jobs:
         run: yarn
       - name: Test Success
         run: yarn test
-      - name: Test Failed
-        run: yarn error_test
       - name: Create file test_result.txt and write the job status into it
         if: always()
         run: |
