@@ -26,6 +26,7 @@ jobs:
         if: always()
         run: echo "TEST_RESULT=${{ job.status }}" >> $GITHUB_ENV
   execute_on_failure:
+    runs-on: ubuntu-latest
     needs: [test]
     if: always()
     steps:
