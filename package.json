@@ -6,6 +6,7 @@
   "author": "ehgmsdk20 <kdh75576795@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "echo 'execute your test code'"
+    "test": "echo 'execute your test code'",
+    "error_test": "echo 'error occurred' && exit 1"
   }
 }
