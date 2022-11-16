@@ -20,6 +20,8 @@ jobs:
         run: yarn
       - name: Test Success
         run: yarn test
+      - name: Test Failed
+        run: yarn error_test
       - name: Execute on failure
         if: ${{ (job.status == 'failure') }}
         run: echo 'test failed!'
