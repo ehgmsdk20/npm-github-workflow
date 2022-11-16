@@ -23,5 +23,8 @@ jobs:
       - name: Test Failed
         run: yarn error_test
       - name: Execute on failure
+        if: always()
+        run: echo ${{ job.status }}
+      - name: Execute on failure
         if: ${{ (job.status == 'failure') }}
         run: echo 'test failed!'
