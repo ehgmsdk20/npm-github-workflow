@@ -22,11 +22,13 @@ jobs:
         run: yarn test
       - name: Test Failed
         run: yarn error_test
-      - name: Execute on failure
+      - name: Export test result
         if: always()
-        run: |
-          echo ${{ job.status }}
-          echo ${{ job.status == 'failure' }}
-      - name: Execute on failure
-        if: ${{ (job.status == 'failure') }}
+        run: echo "TEST_RESULT=${{ job.status }}" >> $GITHUB_ENV
+  execute_on_failure:
+    needs: [test]
+    if: always()
+    steps:
+      - name: Notify error
+        if: ${{ (env.TEST_RESULT == 'failure') }}
         run: echo 'test failed!'
