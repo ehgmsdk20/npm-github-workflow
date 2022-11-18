@@ -18,6 +18,10 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github.event.workflow_run) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: Dump GitHub pr number
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event.workflow_run.pull_requests[0].number) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Dump GitHub event
         env:
           GITHUB_CONTEXT: ${{ toJson(github.event) }}
