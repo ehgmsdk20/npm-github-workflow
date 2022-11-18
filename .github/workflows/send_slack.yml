@@ -14,6 +14,14 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
+      - name: Dump GitHub wf
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event.workflow_run) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump GitHub event
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Get error log
         run: echo "ERROR_LOG=$(gh run view ${{ github.event.workflow_run.run_number }} --log-failed | tail -n 10)" >> $GITHUB_ENV
         env:
