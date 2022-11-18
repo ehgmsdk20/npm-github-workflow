@@ -10,6 +10,10 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - uses: actions/checkout@v3
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Get error log
         run: echo "ERROR_LOG=$(gh run view ${{ github.event.workflow_run.run_number }} --log-failed | tail -n 10)" >> $GITHUB_ENV
         env:
