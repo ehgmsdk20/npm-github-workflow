@@ -30,8 +30,9 @@ jobs:
         id: error_log
         run: |
           ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
-          echo $ERROR_LOG
-          echo "ERROR_LOG=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
+          echo "$ERROR_LOG"
+          echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
+          echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify error to slack
@@ -61,7 +62,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_1 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
@@ -97,7 +98,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n```${{ toJson(steps.error_log.outputs.ERROR_LOG) }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "*Error log*\n```${{ toJson(steps.error_log.outputs.ERROR_LOG_1) }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
@@ -133,7 +134,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n\"${{ steps.error_log.outputs.ERROR_LOG }}\"```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_2 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
