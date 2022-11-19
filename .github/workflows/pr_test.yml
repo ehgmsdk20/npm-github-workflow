@@ -21,6 +21,12 @@ jobs:
         run: |
           yarn
           echo "$(git branch)"
+          git branch
+          git log
+          git checkout develop
+          echo "$(git branch)"
+          git branch
+          git log
       - name: Test Success
         run: yarn test
       - name: Test Fail
