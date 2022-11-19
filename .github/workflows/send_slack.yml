@@ -30,10 +30,15 @@ jobs:
         id: error_log
         run: |
           ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)"
+          echo $ERROR_LOG
           ERROR_LOG="$(echo "$ERROR_LOG" | sed -z 's/\n/\\n/g')"
+          echo $ERROR_LOG
           echo "ERROR_LOG=$ERROR_LOG" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: toJson
+        run: |
+          echo ${{ steps.error_log.outputs.ERROR_LOG }}
       - name: Notify error to slack
         id: slack
         uses: slackapi/slack-github-action@v1.23.0
