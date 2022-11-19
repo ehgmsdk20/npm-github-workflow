@@ -27,7 +27,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Get error log
-        run: echo "ERROR_LOG=$(gh run view ${{ github.event.workflow_run.run_number }} --log-failed | tail -n 10)" >> $GITHUB_ENV
+        run: echo "ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify error to slack
