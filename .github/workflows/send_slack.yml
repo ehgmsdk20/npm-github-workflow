@@ -117,7 +117,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n```${{ steps.error_log_1.outputs.ERROR_LOG_1 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "*Error log*\n```${{ steps.error_log_6.outputs.ERROR_LOG_6 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
@@ -189,7 +189,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n```${{ steps.error_log_2.outputs.ERROR_LOG_2 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "Hello\n```${{ steps.error_log_6.outputs.ERROR_LOG_6 }}```"
                   }
                 }
               ]
@@ -225,7 +225,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n```${{ steps.error_log_3.outputs.ERROR_LOG_3 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "```${{ steps.error_log_6.outputs.ERROR_LOG_6 }}```"
                   }
                 }
               ]
