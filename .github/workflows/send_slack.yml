@@ -61,13 +61,12 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "*Error log*\n```${{ env.ERROR_LOG }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
             }
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
           SLACK_WEBHOOK_URL: ${{ secrets.TEST_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
