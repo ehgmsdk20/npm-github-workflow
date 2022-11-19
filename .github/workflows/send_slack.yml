@@ -50,6 +50,27 @@ jobs:
           echo "ERROR_LOG_3=\"$ERROR_LOG\"" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        if: always()
+        run: |
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | grep error | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
+          echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        if: always()
+        run: |
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | grep error | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
+          echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        if: always()
+        run: |
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | grep error | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
+          echo "ERROR_LOG_3=\"$ERROR_LOG\"" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: test
         if: always()
         run: echo "ERROR_LOG=test (14.x)     Test Fail       2022-11-19T13:47:56.4464534Z ##[group]Run exit 1\ntest (14.x)   Test Fail       2022-11-19T13:47:56.4464778Z exit 1\ntest (14.x)        Test Fail       2022-11-19T13:47:56.4517027Z shell: /usr/bin/bash -e {0}\ntest (14.x)        Test Fail       2022-11-19T13:47:56.4517271Z ##[endgroup]\ntest (14.x)  Test Fail       2022-11-19T13:47:56.4612214Z ##[error]Process completed with exit code 1.\ntest (16.x)       Test Fail       2022-11-19T13:47:53.5128351Z ##[group]Run exit 1\ntest (16.x)   Test Fail       2022-11-19T13:47:53.5128653Z exit 1\ntest (16.x)    Test Fail        2022-11-19T13:47:53.5187966Z shell: /usr/bin/bash -e {0}\ntest (16.x)   Test Fail       2022-11-19T13:47:53.5188256Z ##[endgroup]\ntest (16.x)  Test Fail       2022-11-19T13:47:53.5291034Z ##[error]Process completed with exit code 1.\n" >> $GITHUB_OUTPUT
