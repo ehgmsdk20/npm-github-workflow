@@ -52,9 +52,26 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get error log
         if: always()
+        id: error_log_4
         run: |
-          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | grep error | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
-          echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
+          echo "ERROR_LOG_4=$ERROR_LOG" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        if: always()
+        id: error_log_5
+        run: |
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z 's/\n/\\n/g' | sed 's/\t/    /g')"
+          echo "ERROR_LOG_5=$ERROR_LOG" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        if: always()
+        id: error_log_6
+        run: |
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 |'s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g' | sed 's/\t/    /g')"
+          echo "ERROR_LOG_6=$ERROR_LOG" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get error log
@@ -295,6 +312,114 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "${{ steps.error_log_2.outputs.ERROR_LOG_2 }}"
+                  }
+                }
+              ]
+            }
+        env:
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          SLACK_WEBHOOK_URL: ${{ secrets.TEST_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Notify error to slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":rotating_light:PIPELINE FAILED",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ steps.error_log_4.outputs.ERROR_LOG_4 }}"
+                  }
+                }
+              ]
+            }
+        env:
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          SLACK_WEBHOOK_URL: ${{ secrets.TEST_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Notify error to slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":rotating_light:PIPELINE FAILED",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ steps.error_log_5.outputs.ERROR_LOG_5 }}"
+                  }
+                }
+              ]
+            }
+        env:
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          SLACK_WEBHOOK_URL: ${{ secrets.TEST_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Notify error to slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":rotating_light:PIPELINE FAILED",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ steps.error_log_6.outputs.ERROR_LOG_6 }}"
                   }
                 }
               ]
