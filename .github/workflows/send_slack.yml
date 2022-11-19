@@ -34,30 +34,21 @@ jobs:
           echo "$ERROR_LOG"
           echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
           echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
+          echo "ERROR_LOG_3=\"$ERROR_LOG\"" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get error log
+      - name: print
         if: always()
         run: |
-          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
-          echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get error log
+          echo "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_1 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+      - name: print
         if: always()
         run: |
-          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
-          echo "$ERROR_LOG"
-          echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get error log
+          echo "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_2 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+      - name: print
         if: always()
         run: |
-          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
-          echo "$ERROR_LOG"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_3 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
       - name: Notify error to slack
         id: slack
         if: always()
@@ -159,6 +150,42 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_2 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          SLACK_WEBHOOK_URL: ${{ secrets.TEST_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      - name: Notify error to slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":rotating_light:PIPELINE FAILED",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_3 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
