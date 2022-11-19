@@ -54,7 +54,7 @@ jobs:
         if: always()
         id: error_log_4
         run: |
-          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
           echo "ERROR_LOG_4=$ERROR_LOG" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,22 +70,8 @@ jobs:
         if: always()
         id: error_log_6
         run: |
-          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 |'s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g' | sed 's/\t/    /g')"
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g' | sed 's/\t/    /g')"
           echo "ERROR_LOG_6=$ERROR_LOG" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get error log
-        if: always()
-        run: |
-          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | grep error | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
-          echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get error log
-        if: always()
-        run: |
-          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | grep error | sed -r 's/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g' | sed -z 's/\n/\\n/g')"
-          echo "ERROR_LOG_3=\"$ERROR_LOG\"" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: test
