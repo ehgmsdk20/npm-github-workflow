@@ -27,10 +27,13 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Get error log
+        id: error_log
         run: |
-          echo "ERROR_LOG<<EOF" >> $GITHUB_ENV
-          echo "$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)"
+          ERROR_LOG="${ERROR_LOG//'%'/'%25'}"
+          ERROR_LOG="${ERROR_LOG//$'\n'/'%0A'}"
+          ERROR_LOG="${ERROR_LOG//$'\r'/'%0D'}"
+          echo "ERROR_LOG=$ERROR_LOG" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify error to slack
@@ -60,7 +63,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n${{ env.ERROR_LOG }}\nCheck full logs in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}"
+                    "text": "*Error log*\n${{ steps.error_log.outputs.ERROR_LOG }}\nCheck full logs in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}"
                   }
                 }
               ]
