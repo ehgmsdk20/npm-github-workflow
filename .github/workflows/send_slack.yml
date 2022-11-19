@@ -29,11 +29,9 @@ jobs:
       - name: Get error log
         id: error_log
         run: |
-          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)"
-          ERROR_LOG="${ERROR_LOG//'%'/'%25'}"
-          ERROR_LOG="${ERROR_LOG//$'\n'/'%0A'}"
-          ERROR_LOG="${ERROR_LOG//$'\r'/'%0D'}"
-          echo "ERROR_LOG=$ERROR_LOG" >> $GITHUB_OUTPUT
+          echo "ERROR_LOG<<EOF" >> $GITHUB_ENV
+          echo "$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify error to slack
@@ -42,7 +40,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "${{ github.event.workflow.name }} failed for <${{ github.event.workflow_run.pull_requests[0].html_url }}|PR#${{ github.event.workflow_run.pull_requests[0].number }}>",
+              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pulls/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
               "blocks": [
                 {
                   "type": "header",
@@ -56,14 +54,14 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pulls/$PR_NUMBER|PR#$PR_NUMBER>"
+                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pulls/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
                   }
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n${{ steps.error_log.outputs.ERROR_LOG }}\nCheck full logs in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}"
+                    "text": "*Error log*\n${{ toJson(env.ERROR_LOG) }}\nCheck full logs in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}"
                   }
                 }
               ]
