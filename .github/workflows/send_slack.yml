@@ -185,7 +185,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Error log*\n```${{ steps.error_log.outputs.ERROR_LOG_3 }}```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
+                    "text": "*Error log*\n```test (14.x)     Test Fail       2022-11-19T13:47:56.4464534Z ##[group]Run exit 1\ntest (14.x)   Test Fail       2022-11-19T13:47:56.4464778Z exit 1\ntest (14.x)        Test Fail       2022-11-19T13:47:56.4517027Z shell: /usr/bin/bash -e {0}\ntest (14.x)        Test Fail       2022-11-19T13:47:56.4517271Z ##[endgroup]\ntest (14.x)  Test Fail       2022-11-19T13:47:56.4612214Z ##[error]Process completed with exit code 1.\ntest (16.x)       Test Fail       2022-11-19T13:47:53.5128351Z ##[group]Run exit 1\ntest (16.x)   Test Fail       2022-11-19T13:47:53.5128653Z exit 1\ntest (16.x)    Test Fail        2022-11-19T13:47:53.5187966Z shell: /usr/bin/bash -e {0}\ntest (16.x)   Test Fail       2022-11-19T13:47:53.5188256Z ##[endgroup]\ntest (16.x)  Test Fail       2022-11-19T13:47:53.5291034Z ##[error]Process completed with exit code 1.\n```\nCheck full logs in ${{ github.event.workflow_run.html_url }}"
                   }
                 }
               ]
