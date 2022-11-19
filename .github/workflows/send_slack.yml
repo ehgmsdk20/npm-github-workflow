@@ -27,6 +27,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github.event) }}
         run: echo "$GITHUB_CONTEXT"
       - name: Get error log
+        if: always()
         id: error_log
         run: |
           ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
@@ -36,12 +37,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get error log
+        if: always()
         run: |
           ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
           echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get error log
+        if: always()
         run: |
           ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
           echo "$ERROR_LOG"
@@ -49,6 +52,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get error log
+        if: always()
         run: |
           ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
           echo "$ERROR_LOG"
