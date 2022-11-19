@@ -36,7 +36,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "Publishing ${{ needs.publish.steps.get_version.outputs.VERSION }} failed for [PR#${{ github.event.number }}](${{ github.event.pull_request.html_url }})",
+              "text": "${{ github.event.workflow_run.display_title }} failed for [PR#${{ github.event.workflow_run.pull_requests[0].number }}](${{ github.event.workflow_run.pull_requests[0].html_url }})",
               "blocks": [
                 {
                   "type": "header",
@@ -50,7 +50,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ github.event.workflow_run.display_title }} failed for [PR#${{ github.event.workflow_run.event.number }}](${{ github.event.workflow_run.event.pull_request.html_url }})"
+                    "text": "${{ github.event.workflow_run.display_title }} failed for [PR#${{ github.event.workflow_run.pull_requests[0].number }}](${{ github.event.workflow_run.pull_requests[0].html_url }})"
                   }
                 },
                 {
