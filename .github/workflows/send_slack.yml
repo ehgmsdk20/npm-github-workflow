@@ -35,8 +35,28 @@ jobs:
           echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        run: |
+          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
+          echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        run: |
+          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
+          echo "$ERROR_LOG"
+          echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get error log
+        run: |
+          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
+          echo "$ERROR_LOG"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify error to slack
         id: slack
+        if: always()
         uses: slackapi/slack-github-action@v1.23.0
         with:
           payload: |
