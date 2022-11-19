@@ -30,7 +30,7 @@ jobs:
         if: always()
         id: error_log
         run: |
-          ERROR_LOG=$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")
+          ERROR_LOG="$(gh run view ${{ github.event.workflow_run.id }} --log-failed | tail -n 10 | sed -z "s/\n/\\n/g")"
           echo "$ERROR_LOG"
           echo "ERROR_LOG_1=\'$ERROR_LOG\'" >> $GITHUB_OUTPUT
           echo "ERROR_LOG_2=$ERROR_LOG" >> $GITHUB_OUTPUT
