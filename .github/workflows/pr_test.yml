@@ -1,7 +1,12 @@
 name: PR Test
 on:
   pull_request:
+<<<<<<< HEAD
     branches: [ develop ] #put your branches which you want to execute test pipeline
+=======
+    branches: [ main ] #put your branches which you want to execute test pipeline
+    types: [opened, closed]
+>>>>>>> aeff2c0ce2e34c8d94bb9424eb45aab9a537b6ec
 
 jobs:
   test:
@@ -17,34 +22,18 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: yarn
+        run: |
+          yarn
+          echo "$(git branch)"
       - name: Test Success
         run: yarn test
       - name: Test Fail
         run: exit 1
-      - name: Create file test_result.txt and write the job status into it
-        if: always()
-        run: |
-          echo ${{ job.status }} > test_result.txt
-      - name: Upload file test_result.txt as an artifact
-        if: always()
-        uses: actions/upload-artifact@v1
-        with:
-          name: test_result
-          path: test_result.txt
 
   execute_on_failure:
     runs-on: ubuntu-latest
     needs: [test]
-    if: always()
+    if: failure()
     steps:
-      - name: Download artifact test_result
-        uses: actions/download-artifact@v1
-        with:
-          name: test_result
-      - name: Set test result as output parameter
-        id: set_output
-        run: echo "::set-output name=test_result::$(<test_result/test_result.txt)"
       - name: Notify error
-        if: ${{ (steps.set_output.outputs.test_result == 'failure') }}
         run: echo 'test failed!'
