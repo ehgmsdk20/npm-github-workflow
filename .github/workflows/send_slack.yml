@@ -40,7 +40,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pulls/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
+              "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>",
               "blocks": [
                 {
                   "type": "header",
@@ -54,7 +54,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pulls/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
+                    "text": "${{ github.event.workflow.name }} failed for <${{ github.server_url }}/${{ github.repository }}/pull/${{ env.PR_NUMBER }}|PR#${{ env.PR_NUMBER }}>"
                   }
                 },
                 {
