@@ -22,7 +22,6 @@ jobs:
       - name: Push tag
         run: |
           git branch
-          git checkout main
           git tag $(echo ${{ github.head_ref }} | cut -b 9-)
           git push --tags
         env:
