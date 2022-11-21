@@ -1,7 +1,7 @@
-name: PR Test
+name: PR Test for develop branch
 on:
   pull_request:
-    branches: [ main, develop ] #put your branches which you want to execute test pipeline
+    branches: [ develop ] #put your branches which you want to execute test pipeline
     types: [opened, closed]
 
 jobs:
