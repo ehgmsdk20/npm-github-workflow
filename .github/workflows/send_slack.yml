@@ -1,7 +1,7 @@
 name: Send Error to Slack
 on:
   workflow_run:
-    workflows: [Publish Package to Npm, PR Test]
+    workflows: [Test Pipeline for Merged PR]
     types:
       - completed
 jobs:
