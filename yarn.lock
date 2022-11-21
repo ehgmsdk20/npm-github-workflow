@@ -2,3 +2,7 @@
 # yarn lockfile v1
 
 
+"yarn-github-workflow-test@^1.2.1":
+  "integrity" "sha512-oeayzYBCgzmAO1u4NMijxMUmHzoCn87QpW2TUg8ysCSkVdz2RGWwJOxWowttg0qTehrZiPoZuhc3bdsBfiizEg=="
+  "resolved" "https://registry.npmjs.org/yarn-github-workflow-test/-/yarn-github-workflow-test-1.2.1.tgz"
+  "version" "1.2.1"
