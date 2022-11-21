@@ -2,14 +2,13 @@ name: Test Pipeline for opened PR
 on:
   pull_request:
     branches: [ main, develop ] #put your branches which you want to execute test pipeline
-    types: [opened, syncronize]
-
+    types: [ opened, syncronize ]
+concurrency: 
+      group: ${{ github.event.pull_request.number }}
+      cancel-in-progress: true
 jobs:
   test:
     runs-on: ubuntu-latest
-    concurrency: 
-      group: ${{ github.event.pull_request.number }}
-      cancel-in-progress: true
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -25,11 +24,3 @@ jobs:
           echo "$(git branch)"
       - name: Test Success
         run: yarn test
-
-  execute_on_failure:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: failure()
-    steps:
-      - name: Notify error
-        run: echo 'test failed!'
