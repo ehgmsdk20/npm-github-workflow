@@ -8,5 +8,8 @@
   "scripts": {
     "test": "echo 'execute your test code'",
     "error_test": "echo 'error occurred' && exit 1"
+  },
+  "dependencies": {
+    "yarn-github-workflow-test": "^1.2.1"
   }
 }
