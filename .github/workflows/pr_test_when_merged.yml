@@ -23,7 +23,8 @@ jobs:
       - name: Test Success
         run: yarn test
   publish:
-    if: ${{ startsWith(github.head_ref, 'release/') && (github.event.pull_request.merged == true) }}
+    needs: test_merged_pr
+    if: ${{ startsWith(github.head_ref, 'release/') && (github.base_ref == 'main') && (github.event.pull_request.merged == true) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,9 +33,7 @@ jobs:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
-        run: |
-          yarn
-          echo "$(git branch)"
+        run: yarn
       - name: Test Success
         run: yarn test
       - name: Publish package
