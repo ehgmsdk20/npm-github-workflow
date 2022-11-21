@@ -22,7 +22,6 @@ jobs:
       - name: Install dependencies
         run: |
           yarn
-          echo "$(git branch)"
       - name: Test Success
         run: yarn test
   publish:
