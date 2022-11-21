@@ -1,13 +1,15 @@
-name: PR Test for develop branch
+name: Test Pipeline for opened PR
 on:
   pull_request:
-    branches: [ develop ] #put your branches which you want to execute test pipeline
-    types: [opened, closed]
+    branches: [ main, develop ] #put your branches which you want to execute test pipeline
+    types: [opened, syncronize]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    concurrency: 
+      group: ${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]

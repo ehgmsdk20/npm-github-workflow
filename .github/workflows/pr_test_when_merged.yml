@@ -1,14 +1,14 @@
-name: Pipeline for PR on main branch
+name: Test Pipeline for Merged PR
 on:
   pull_request:
-    branches: [ main ]
-    types: [ opened, synchronize, closed ]
+    branches: [ main, develop ]
+    types: [ closed ]
 jobs:
-  test:
+  test_merged_pr:
     concurrency: 
       group: ${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    if: ${{ (!startsWith(github.head_ref, 'release/') && (github.event.pull_request.action == 'closed') && (github.event.pull_request.merged == true)) || !(github.event.pull_request.action == 'closed') }}
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
       - name: Test Success
         run: yarn test
   publish:
-    if: ${{ startsWith(github.head_ref, 'release/') && (github.event.pull_request.action == 'closed') && (github.event.pull_request.merged == true) }}
+    if: ${{ startsWith(github.head_ref, 'release/') && (github.event.pull_request.merged == true) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
