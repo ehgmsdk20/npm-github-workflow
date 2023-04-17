@@ -46,8 +46,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       - name: Push tag
         run: |
-          git branch
-          git tag $(echo ${{ github.head_ref }} | cut -b 9-)
+          echo "NEW_VERSION=$(echo ${{ github.head_ref }} | cut -b 9-)" >> $GITHUB_ENV
+          git tag ${{env.NEW_VERSION}}
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
