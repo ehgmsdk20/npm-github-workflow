@@ -42,12 +42,12 @@ jobs:
         run: |
           yarn
           yarn publish --access public
-          echo "NEW_VERSION=$(echo ${{ github.head_ref }} | cut -b 9-)" >> $GITHUB_ENV
+          echo "NEW_VERSION=$(npm pkg get version | tr -d '"')" >> $GITHUB_ENV
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
       - name: Push tag
         run: |
-          git tag ${{ env.NEW_VERSION }}
+          git tag v${{ env.NEW_VERSION }}
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
