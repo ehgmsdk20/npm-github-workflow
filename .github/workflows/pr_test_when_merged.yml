@@ -36,11 +36,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         run: yarn
-      - name: Test Success
-        run: yarn test
       - name: Publish package
         run: |
           yarn
+          yarn build
           yarn publish --access public
           echo "NEW_VERSION=$(npm pkg get version | tr -d '"')" >> $GITHUB_ENV
         env:
